@@ -71,6 +71,7 @@ export class LoanEditComponent implements OnInit {
         },
         error => {
             this.errorSaving = true;
+            this.errorSavingStr = error.error;
         });    
     }  
 
