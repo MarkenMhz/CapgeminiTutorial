@@ -85,4 +85,19 @@ public class ClientIT {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    public void clientExistShouldReturnError() {
+        ClientDto clientDtoExistent = new ClientDto();
+        clientDtoExistent.setName("THE_NEW");
+
+        restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.PUT, new HttpEntity<>(clientDtoExistent), Void.class);
+
+        ClientDto clientDtoNew = new ClientDto();
+        clientDtoNew.setName("THE_NEW");
+
+        ResponseEntity response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH, HttpMethod.PUT, new HttpEntity<>(clientDtoExistent), Void.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response);
+    }
 }
