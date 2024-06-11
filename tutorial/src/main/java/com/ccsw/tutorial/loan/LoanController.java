@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -51,13 +53,19 @@ public class LoanController {
     /**
      * Método para crear o actualizar un {@link Loan}
      *
-     * @param id PK de la entidad
+     * @param id  PK de la entidad
      * @param dto datos de la entidad
+     * @return
      */
     @Operation(summary = "Save or Update", description = "Method that saves or updates a Loan")
     @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
-    public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody LoanDto dto) throws Exception {
-        this.loanService.save(id, dto);
+    public ResponseEntity<String> save(@PathVariable(name = "id", required = false) Long id, @RequestBody LoanDto dto) {
+        try {
+            this.loanService.save(id, dto);
+            return null;
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     /**
